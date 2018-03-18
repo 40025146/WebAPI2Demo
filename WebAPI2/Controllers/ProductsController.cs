@@ -12,6 +12,7 @@ using WebAPI2.Models;
 
 namespace WebAPI2.Controllers
 {
+    [RoutePrefix("products")]
     public class ProductsController : ApiController
     {
         private FabricsEntities db = new FabricsEntities();
@@ -26,6 +27,7 @@ namespace WebAPI2.Controllers
         /// 取得所有商品
         /// </summary>
         /// <returns></returns>
+        [Route("")]
         public IQueryable<Product> GetProducts()
         {
             return db.Products.OrderByDescending(p=>p.ProductId).Take(10);
@@ -36,9 +38,9 @@ namespace WebAPI2.Controllers
         /// 取得單一參數
         /// <param name="id">Product ID</param>
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
         [ResponseType(typeof(Product))]
+        [Route("{id}", Name = "GetProductById")]
         public IHttpActionResult GetProduct(int id)
         {
             Product product = db.Products.Find(id);
@@ -49,9 +51,10 @@ namespace WebAPI2.Controllers
 
             return Ok(product);
         }
-
+        
         // PUT: api/Products/5
         [ResponseType(typeof(void))]
+        [Route("{id}")]
         public IHttpActionResult PutProduct(int id, Product product)
         {
             if (!ModelState.IsValid)
@@ -87,6 +90,7 @@ namespace WebAPI2.Controllers
 
         // POST: api/Products
         [ResponseType(typeof(Product))]
+        [Route("")]
         public IHttpActionResult PostProduct(Product product)
         {
             if (!ModelState.IsValid)
@@ -97,11 +101,12 @@ namespace WebAPI2.Controllers
             db.Products.Add(product);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = product.ProductId }, product);
+            return CreatedAtRoute("GetProductById", new { id = product.ProductId }, product);
         }
 
         // DELETE: api/Products/5
         [ResponseType(typeof(Product))]
+        [Route("{id}")]
         public IHttpActionResult DeleteProduct(int id)
         {
             Product product = db.Products.Find(id);

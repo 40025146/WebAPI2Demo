@@ -492,7 +492,6 @@
             取得單一參數
             <param name="id">Product ID</param>
             </summary>
-            <param name="id"></param>
             <returns></returns>
         </member>
     </members>
