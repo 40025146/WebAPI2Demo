@@ -16,13 +16,28 @@ namespace WebAPI2.Controllers
     {
         private FabricsEntities db = new FabricsEntities();
 
+        public ProductsController()
+        {
+            db.Configuration.LazyLoadingEnabled = false;
+        }
+
         // GET: api/Products
+        /// <summary>
+        /// 取得所有商品
+        /// </summary>
+        /// <returns></returns>
         public IQueryable<Product> GetProducts()
         {
-            return db.Products;
+            return db.Products.OrderByDescending(p=>p.ProductId).Take(10);
         }
 
         // GET: api/Products/5
+        /// <summary>
+        /// 取得單一參數
+        /// <param name="id">Product ID</param>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ResponseType(typeof(Product))]
         public IHttpActionResult GetProduct(int id)
         {
